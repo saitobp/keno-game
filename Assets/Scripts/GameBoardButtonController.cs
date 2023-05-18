@@ -1,5 +1,6 @@
 using System;
 using System.Text.RegularExpressions;
+using DG.Tweening;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -9,6 +10,10 @@ public class GameBoardButtonController : MonoBehaviour
   public int id;
 
   public bool IsSelected = false;
+
+  [Space(8)]
+  [Header("Click Animation")]
+  public float ClickAnimationDuration = 0.075f;
 
   private GameObject UserSelection;
 
@@ -31,6 +36,8 @@ public class GameBoardButtonController : MonoBehaviour
 
   public void Click()
   {
+    ClickAnimation();
+
     var userSelectionValue = GlobalStateController.Instance.UserSelection.Count;
     var maxSelectionValue = GlobalStateController.Instance.MaxSelection;
 
@@ -82,5 +89,15 @@ public class GameBoardButtonController : MonoBehaviour
     var maxSelectionValue = GlobalStateController.Instance.MaxSelection;
 
     userSelectionText.text = $"Selected: {userSelectionValue} of {maxSelectionValue}";
+  }
+
+  private void ClickAnimation()
+  {
+    var sequence = DOTween.Sequence();
+
+    sequence.Append(transform.DOScale(0.9f, ClickAnimationDuration));
+    sequence.Append(transform.DOScale(1.1f, ClickAnimationDuration));
+    sequence.Append(transform.DOScale(1.0f, ClickAnimationDuration));
+    sequence.SetEase(Ease.Linear);
   }
 }
